@@ -44,6 +44,11 @@ const std::vector<CenterlineMarker>& CExtendedCenterline::GetMarkers() const
 	return markers;
 }
 
+const DWORD& CExtendedCenterline::GetColor() const
+{
+	return color;
+}
+
 double CExtendedCenterline::SetCourse(double crs)
 {
 	if (id == Identifier("*", "*"))
@@ -54,4 +59,9 @@ double CExtendedCenterline::SetCourse(double crs)
 void CExtendedCenterline::SetFinalApproachFix(const std::string & fap)
 {
 	final_approach_fix = fap;
+}
+
+void CExtendedCenterline::SetColor(const DWORD& clr)
+{
+	color = clr;
 }

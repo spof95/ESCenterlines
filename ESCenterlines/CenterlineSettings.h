@@ -10,8 +10,10 @@
 #include "DataObjects.h"
 #include "json\json.h"
 #include "json\json-forwards.h"
+#include "boost/optional.hpp"
 
 const char FILENAME[] = "clsettings.cfg";
+
 
 class CCenterlineSettings
 {
@@ -41,6 +43,7 @@ private:
 	const std::string ELEMENTS = "cl_elements";
 	const std::string DIRECTION = "direction";
 	const std::string NUMBER = "number";
+	const std::string COLOR = "color";
 
 	Identifier default_identifier { "*", "*" };
 	std::unique_ptr<CExtendedCenterline> default_centerline;
@@ -59,5 +62,6 @@ private:
 	//bool ReadFromJson(const Json::Value & jv, std::vector<CCenterlineElement> & ce);
 	void WriteToFile(Json::Value & j, std::string filename = FILENAME);
 	void LoadFromFile(Json::Value & j);
+	boost::optional<DWORD> GetColor(Json::Value& j);
 };
 

@@ -75,7 +75,8 @@ void CESCenterlinesScreen::CreateLines()
 	{
 		auto cl = centerline_settings.GetExtendedCenterline(r->GetId());
 		auto fap = GetFixCoordinate(cl->GetFinalApproachFix(), r->GetThresholdPosition());
-		geographic.CalculateExtendedCenterline(*r, cl, fap.get(), lines);
+		auto color = cl->GetColor();
+		geographic.CalculateExtendedCenterline(*r, cl, fap.get(), color, lines);
 	}
 }
 
@@ -98,10 +99,14 @@ void CESCenterlinesScreen::DrawLines(HDC & hDC)
 			continue;
 		if (line->DependsOn() && (!display_active || IsRunwayActive(*line->DependsOn())))
 			continue;
+		auto color = line->GetColor();
+		auto pen = CreatePen(BS_SOLID, 1, color);
+		SelectObject(hDC, pen);
 		auto pp1 = ConvertCoordFromPositionToPixel(line->C1());
 		auto pp2 = ConvertCoordFromPositionToPixel(line->C2());
 		MoveToEx(hDC, pp1.x, pp1.y, nullptr);
 		LineTo(hDC, pp2.x, pp2.y);
+		
 	}
 }
 

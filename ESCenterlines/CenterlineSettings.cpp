@@ -1,4 +1,6 @@
 #include "CenterlineSettings.h"
+extern "C" IMAGE_DOS_HEADER __ImageBase;
+char DllPathFile[_MAX_PATH];
 
 
 
@@ -39,6 +41,7 @@ void CCenterlineSettings::Load()
 	{
 		bool default_line { false };
 		Identifier id = GetId(j);
+		boost::optional<DWORD> color = GetColor(j);
 		std::unique_ptr<CExtendedCenterline> centerline;
 		CExtendedCenterline* runway { nullptr };
 		if (!id.size())
@@ -54,6 +57,7 @@ void CCenterlineSettings::Load()
 			centerline = std::make_unique<CExtendedCenterline>(id);
 			runway = centerline.get();
 		}
+		runway->SetColor(color.value_or(RGB(200, 200, 200)));
 		Json::Value jval;
 		if ((jval = j.get(COURSE, 0)).isDouble())
 			runway->SetCourse(jval.asDouble());
@@ -98,6 +102,18 @@ Identifier CCenterlineSettings::GetId(Json::Value & j)
 		runway_name = j.get(RUNWAY, "").asString();
 	Identifier id(airport_name, runway_name);
 	return id;
+}
+
+boost::optional<DWORD> CCenterlineSettings::GetColor(Json::Value& j)
+{
+	Json::Value jval;
+	if ((jval = j.get(COLOR, "")).isString()) {
+		int r, g, b;
+		std::string colorstring = j.get(COLOR, "").asString();
+		sscanf_s(colorstring.c_str(), "#%02x%02x%02x", &r, &g, &b);
+		return RGB(r, g, b);
+	}
+	return boost::none;
 }
 
 std::vector<CenterlineElement> CCenterlineSettings::GetElements(Json::Value & j_arr)
@@ -291,7 +307,11 @@ void CCenterlineSettings::WriteToFile(Json::Value & j, std::string filename)
 void CCenterlineSettings::LoadFromFile(Json::Value & j)
 {
 	std::ifstream iFile;
-	iFile.open(FILENAME);
+	GetModuleFileNameA(HINSTANCE(&__ImageBase), DllPathFile, sizeof(DllPathFile));
+	std::string path = DllPathFile;
+	path.resize(path.size() - strlen("ESCenterlines.dll"));
+	path += FILENAME;
+	iFile.open(path);
 	if (!iFile.is_open())
 		return;
 	try

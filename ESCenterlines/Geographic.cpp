@@ -10,7 +10,7 @@ CGeographic::~CGeographic()
 {
 }
 
-void CGeographic::CalculateExtendedCenterline(const CRunway& runway, CExtendedCenterline* cl, const CCoordinate* coordinate, std::vector<std::unique_ptr<CLine>>& l)
+void CGeographic::CalculateExtendedCenterline(const CRunway& runway, CExtendedCenterline* cl, const CCoordinate* coordinate, const DWORD color, std::vector<std::unique_ptr<CLine>>& l)
 {
 	auto course { 0.0 };
 	auto threshold = runway.GetThresholdPosition();
@@ -23,8 +23,8 @@ void CGeographic::CalculateExtendedCenterline(const CRunway& runway, CExtendedCe
 			course = GetAzimuth(runway.GetThresholdPosition(), runway.GetStopEndPosition());
 		geodesic_line = geodesic.Line(threshold.m_Latitude, threshold.m_Longitude, course + 180);
 	}
-	CalculateCenterline(runway, cl, l);
-	CalculateRangeTicks(runway, cl, l);
+	CalculateCenterline(runway, cl, color, l);
+	CalculateRangeTicks(runway, cl, color, l);
 }
 
 double CGeographic::GetAzimuth(const CCoordinate & c1, const CCoordinate & c2)
@@ -53,7 +53,7 @@ double CGeographic::GetDistance(const CCoordinate& c1, const CCoordinate & c2)
 	return 0.0;
 }
 
-void CGeographic::CalculateCenterline(const CRunway& runway, const CExtendedCenterline* centerline, std::vector<std::unique_ptr<CLine>>& l)
+void CGeographic::CalculateCenterline(const CRunway& runway, const CExtendedCenterline* centerline, const DWORD color, std::vector<std::unique_ptr<CLine>>& l)
 {
 	auto pos = 0.0;
 	for (auto & cl : centerline->GetElements())
@@ -67,13 +67,13 @@ void CGeographic::CalculateCenterline(const CRunway& runway, const CExtendedCent
 			auto line_end = line_start + cl.dash_length;
 			auto c1 = GetCoordinate(line_start * GeographicLib::Constants::nauticalmile());
 			auto c2 = GetCoordinate(line_end * GeographicLib::Constants::nauticalmile());
-			l.push_back(std::make_unique<CLine>(runway.GetId(), c1, c2));
+			l.push_back(std::make_unique<CLine>(runway.GetId(), c1, c2, color));
 		}
 		pos += pattern_length * cl.number;
 	}
 }
 
-void CGeographic::CalculateRangeTicks(const CRunway& runway, const CExtendedCenterline* centerline, std::vector<std::unique_ptr<CLine>>& l)
+void CGeographic::CalculateRangeTicks(const CRunway& runway, const CExtendedCenterline* centerline, const DWORD color, std::vector<std::unique_ptr<CLine>>& l)
 {
 	for (auto & rt : centerline->GetMarkers())
 	{
@@ -84,18 +84,18 @@ void CGeographic::CalculateRangeTicks(const CRunway& runway, const CExtendedCent
 			auto c1_left = GetCoordinate(c_base, tick_azimuth_left, -rt.dist_cl * GeographicLib::Constants::nauticalmile());
 			auto c2_left = GetCoordinate(c1_left, tick_azimuth_left, -rt.length * GeographicLib::Constants::nauticalmile());
 			if (rt.depends_on)
-				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_left, c2_left, *rt.depends_on));
+				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_left, c2_left, color, *rt.depends_on));
 			else
-				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_left, c2_left));
+				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_left, c2_left, color));
 		}
 		if (rt.direction == Direction::right || rt.direction == Direction::both)
 		{
 			auto c1_right = GetCoordinate(c_base, tick_azimuth_left, rt.dist_cl * GeographicLib::Constants::nauticalmile());
 			auto c2_right = GetCoordinate(c1_right, tick_azimuth_left, rt.length * GeographicLib::Constants::nauticalmile());
 			if (rt.depends_on)
-				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_right, c2_right, *rt.depends_on));
+				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_right, c2_right, color, *rt.depends_on));
 			else
-				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_right, c2_right));
+				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_right, c2_right, color));
 		}
 	}
 }
