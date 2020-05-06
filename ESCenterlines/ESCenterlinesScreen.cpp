@@ -89,6 +89,7 @@ void CESCenterlinesScreen::DrawExtendedCenterlines(HDC & hDC)
 	auto old_pen = SelectObject(hDC, pen);
 	DrawLines(hDC);
 	SelectObject(hDC, old_pen);
+	DeleteObject(pen);
 }
 
 void CESCenterlinesScreen::DrawLines(HDC & hDC)
@@ -101,11 +102,13 @@ void CESCenterlinesScreen::DrawLines(HDC & hDC)
 			continue;
 		auto color = line->GetColor();
 		auto pen = CreatePen(BS_SOLID, 1, color);
-		SelectObject(hDC, pen);
+		auto oldPen = SelectObject(hDC, pen);
 		auto pp1 = ConvertCoordFromPositionToPixel(line->C1());
 		auto pp2 = ConvertCoordFromPositionToPixel(line->C2());
 		MoveToEx(hDC, pp1.x, pp1.y, nullptr);
 		LineTo(hDC, pp2.x, pp2.y);
+		SelectObject(hDC, oldPen);
+		DeleteObject(pen);
 		
 	}
 }
