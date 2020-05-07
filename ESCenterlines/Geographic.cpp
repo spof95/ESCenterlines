@@ -77,12 +77,13 @@ void CGeographic::CalculateRangeTicks(const CRunway& runway, const CExtendedCent
 {
 	for (auto & rt : centerline->GetMarkers())
 	{
-		auto tick_azimuth_left = geodesic_line.Azimuth() - 90;
+		auto tick_azimuth_left = geodesic_line.Azimuth() + rt.angle;
+		auto tick_azimuth_right = geodesic_line.Azimuth() - rt.angle;
 		auto c_base = GetCoordinate(rt.dist_thr * GeographicLib::Constants::nauticalmile());
 		if (rt.direction == Direction::left || rt.direction == Direction::both)
 		{
-			auto c1_left = GetCoordinate(c_base, tick_azimuth_left, -rt.dist_cl * GeographicLib::Constants::nauticalmile());
-			auto c2_left = GetCoordinate(c1_left, tick_azimuth_left, -rt.length * GeographicLib::Constants::nauticalmile());
+			auto c1_left = GetCoordinate(c_base, tick_azimuth_left, rt.dist_cl * GeographicLib::Constants::nauticalmile());
+			auto c2_left = GetCoordinate(c1_left, tick_azimuth_left, rt.length * GeographicLib::Constants::nauticalmile());
 			if (rt.depends_on)
 				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_left, c2_left, color, *rt.depends_on));
 			else
@@ -90,8 +91,8 @@ void CGeographic::CalculateRangeTicks(const CRunway& runway, const CExtendedCent
 		}
 		if (rt.direction == Direction::right || rt.direction == Direction::both)
 		{
-			auto c1_right = GetCoordinate(c_base, tick_azimuth_left, rt.dist_cl * GeographicLib::Constants::nauticalmile());
-			auto c2_right = GetCoordinate(c1_right, tick_azimuth_left, rt.length * GeographicLib::Constants::nauticalmile());
+			auto c1_right = GetCoordinate(c_base, tick_azimuth_right, rt.dist_cl * GeographicLib::Constants::nauticalmile());
+			auto c2_right = GetCoordinate(c1_right, tick_azimuth_right, rt.length * GeographicLib::Constants::nauticalmile());
 			if (rt.depends_on)
 				l.push_back(std::make_unique<CLine>(runway.GetId(), c1_right, c2_right, color, *rt.depends_on));
 			else
