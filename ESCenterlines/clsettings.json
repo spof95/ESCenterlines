@@ -1,0 +1,100 @@
+[{
+		"airport": "*",
+		"cl_elements": [{
+			"dash": 1,
+			"gap": 1,
+			"number": 10,
+			"starts_gap": true
+		}],
+		"cl_markers": [{
+				"angle": 90,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 0,
+				"dist_cl": 0,
+				"dist_thr": 0,
+				"length": 0.1
+			},
+			{
+				"angle": 90,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 0,
+				"dist_cl": 0,
+				"dist_thr": 4,
+				"length": 0.5
+			},
+			{
+				"angle": 60,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 1,
+				"dist_cl": 0.1,
+				"dist_thr": 10,
+				"length": 0.5
+			},
+			{
+				"angle": 90,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 0,
+				"dist_cl": 0,
+				"dist_thr": 15,
+				"length": 0.5
+			}
+		],
+		"course": 0,
+		"fap": "",
+		"runway": "*"
+	},
+	{
+		"airport": "EDHI",
+		"runway": "05",
+		"course": 0,
+		"fap": "",
+		"color": "#555555",
+		"cl_elements": [{
+			"dash": 1,
+			"gap": 1,
+			"number": 10,
+			"starts_gap": true
+		}],
+		"cl_markers": [{
+				"angle": 90,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 0,
+				"dist_cl": 0,
+				"dist_thr": 0,
+				"length": 0.1
+			},
+			{
+				"angle": 90,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 2,
+				"dist_cl": 0,
+				"dist_thr": 4,
+				"length": 0.5
+			},
+			{
+				"angle": 90,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 2,
+				"dist_cl": 0.5,
+				"dist_thr": 10,
+				"length": 0.5
+			},
+			{
+				"angle": 90,
+				"d_airport": "",
+				"d_runway": "",
+				"direction": 2,
+				"dist_cl": 0,
+				"dist_thr": 15,
+				"length": 0.5
+			}
+		]
+	}
+]
