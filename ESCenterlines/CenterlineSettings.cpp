@@ -107,13 +107,13 @@ Identifier CCenterlineSettings::GetId(Json::Value & j)
 boost::optional<DWORD> CCenterlineSettings::GetColor(Json::Value& j)
 {
 	Json::Value jval;
-	if ((jval = j.get(COLOR, "")).isString()) {
-		int r, g, b;
-		std::string colorstring = j.get(COLOR, "").asString();
-		sscanf_s(colorstring.c_str(), "#%02x%02x%02x", &r, &g, &b);
-		return RGB(r, g, b);
-	}
-	return boost::none;
+	std::string colorstring = j.get(COLOR, "").asString();
+	if(colorstring.empty())
+		return boost::none;
+	int r, g, b;
+	sscanf_s(colorstring.c_str(), "#%02x%02x%02x", &r, &g, &b);
+	return RGB(r, g, b);
+	
 }
 
 std::vector<CenterlineElement> CCenterlineSettings::GetElements(Json::Value & j_arr)
