@@ -12,7 +12,7 @@
 #include "json\json-forwards.h"
 #include "boost/optional.hpp"
 
-const char FILENAME[] = "clsettings.cfg";
+const char FILENAME[] = "clsettings.json";
 
 
 class CCenterlineSettings
