@@ -10,7 +10,7 @@ An addon to display extended centerlines in VATSIM controller client EuroScope.
 * ".cline reload" reloads the configuration file.
 
 Extended centerlines can be defined in the clsettings.json file.
-The format of this file is explained in [this] (configuration.md) document.
+The format of this file is explained in [this](configuration.md) document.
 
 
 Needs to be allowed to draw on the necessary Radar Screens (in Plug-ins Dialog).
