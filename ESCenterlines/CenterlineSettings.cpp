@@ -162,11 +162,13 @@ std::vector<CenterlineMarker> CCenterlineSettings::GetMarkers(Json::Value & j_ar
 			dist_thr = jval.asDouble();
 		if ((jval = j.get(LENGTH, 0.0)).isDouble())
 			length = jval.asDouble();
-		if ((jval = j.get(DIRECTION, 0)).isInt())
+		if ((jval = j.get(DIRECTION, 0)).isString())
 		{
-			auto i = jval.asInt();
-			if (i >= 0 && i <= 2)
-				direction = Direction(i);
+			auto i = jval.asString();
+			if (i == "left")
+				direction = Direction::left;
+			else if (i == "right")
+				direction = Direction::right;
 			else
 				direction = Direction::both;
 		}
