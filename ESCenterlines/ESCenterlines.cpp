@@ -7,7 +7,7 @@ CESCenterlines::CESCenterlines()
 			  MY_PLUGIN_DEVELOPER,
 			  MY_PLUGIN_COPYRIGHT)
 {
-	RegisterDisplayType("ES Centerlines", false, true, false, false);
+	RegisterDisplayType("ES Centerlines", false, true, true, false);
 	GetSystemTimeAsFileTime(&ActiveRunwaysUpdateTime);
 }
 

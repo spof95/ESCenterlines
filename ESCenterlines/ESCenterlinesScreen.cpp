@@ -21,6 +21,8 @@ void CESCenterlinesScreen::OnAsrContentLoaded(bool Loaded)
 
 void CESCenterlinesScreen::OnAsrContentToBeClosed()
 {
+	SaveDataToAsr(DISPLAY_CENTERLINES, DISPLAY_CENTERLINES, display_centerlines ? "1" : "0");
+	SaveDataToAsr(DISPLAY_ACTIVE, DISPLAY_ACTIVE, display_active ? "1" : "0");
 	delete this;
 }
 
